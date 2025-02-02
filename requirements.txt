@@ -1,4 +1,4 @@
-flask 
-ollama 
-flask-cors 
+Flask==2.1.1
+ollama
+flask-cors
 requests
