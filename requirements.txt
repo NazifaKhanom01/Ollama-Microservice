@@ -1,4 +1,4 @@
-Flask
+flask
+flask_cors
 ollama
-Flask-cors
 requests
