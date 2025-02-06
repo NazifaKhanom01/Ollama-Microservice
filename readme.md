@@ -60,7 +60,7 @@ python app.py
 
 The Flask app will run on http://localhost:5000.
 
-## Usage
+## Usage and Testing the service
 Send a POST request to /generate endpoint with the following JSON body:
 ```json
 {
@@ -78,3 +78,21 @@ Response:
   "local_response": "There are many types of colours, including primary colours like red, blue, and yellow..."
 }
 ```
+
+## create a container for microservice using docker
+FROM python:3.9
+WORKDIR /app
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 4000
+CMD ["python", "./services/app.py"]
+
+## Build and Run the docker image
+docker build -t ollamaservice .
+docker run -d -p 4000:4000 ollamaservice
+
+## Additional step
+## created a simple static webpage to show the LLM's response using angular
+## repository link for the webpage
+https://github.com/revathisekar19/llm-app.git
