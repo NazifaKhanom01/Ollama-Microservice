@@ -3,38 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ollama Prompt Generator</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Ollama Chat</title>
+    <script>
+        async function sendPrompt() {
+            const prompt = document.getElementById("prompt").value;
+            if (!prompt) {
+                alert("Please enter a prompt.");
+                return;
+            }
+
+            const responseDiv = document.getElementById("response");
+            responseDiv.innerHTML = "Loading...";
+
+            try {
+                const response = await fetch("/generate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt: prompt, model: "mistral" })
+                });
+
+                const result = await response.json();
+                if (result.local_response) {
+                    responseDiv.innerHTML = `<strong>Response:</strong> ${result.local_response}`;
+                } else {
+                    responseDiv.innerHTML = `<strong>Error:</strong> ${result.error || "Unexpected error"}`;
+                }
+            } catch (error) {
+                responseDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
+            }
+        }
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1 class="my-4">Ollama Prompt Generator</h1>
-
-        <form action="/generate" method="POST">
-            <div class="form-group">
-                <label for="prompt">Enter your prompt:</label>
-                <input type="text" class="form-control" id="prompt" name="prompt" placeholder="Type your prompt here" required>
-            </div>
-            <div class="form-group">
-                <label for="model">Select Model:</label>
-                <select class="form-control" id="model" name="model">
-                    <option value="mistral">Mistral</option>
-                    <option value="llama">Llama</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Generate Response</button>
-        </form>
-
-        {% if response %}
-        <div class="mt-4">
-            <h3>Response:</h3>
-            <p>{{ response }}</p>
-        </div>
-        {% endif %}
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <h1>Ollama Chat</h1>
+    <textarea id="prompt" placeholder="Enter your prompt here..." rows="4" cols="50"></textarea><br>
+    <button onclick="sendPrompt()">Send</button>
+    <div id="response" style="margin-top: 20px;"></div>
 </body>
 </html>
