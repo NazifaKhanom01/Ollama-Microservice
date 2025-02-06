@@ -78,3 +78,36 @@ Response:
   "local_response": "There are many types of colours, including primary colours like red, blue, and yellow..."
 }
 ```
+
+## Running it in docker container
+
+To create an image run the following command.
+
+ ```bash
+ docker build -t ollama-local .
+ ```
+
+ Then to run the image locally run the following command
+ 
+ ```bash
+ docker run -p 4000:4000 -v ollama_models:/root/.ollama/models ollama-local
+ ```
+
+ The docker container will run with port 4000 exposed and then user can use the URL
+ http://localhost:4000/generate to send post request in the follwoing format
+ ```json
+{
+  "prompt": "Can you tell me about different types of colours?",
+  "model": "mistral"
+}
+```
+Sample Request using cURL:
+```bash
+curl -X POST http://localhost:5000/generate -H "Content-Type: application/json" -d '{"prompt": "Can you tell me about different types of colours?", "model": "mistral"}'
+```
+Response:
+```json
+{
+  "local_response": "There are many types of colours, including primary colours like red, blue, and yellow..."
+}
+```
