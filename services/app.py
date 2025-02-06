@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request,render_template, jsonify
 import ollama
 import requests
 import json  
@@ -22,6 +22,8 @@ def generate_response():
     model = data.get("model", "mistral")  # Default to mistral if no model is specified
 
     if not prompt:
+        return render_template('index.html', response="Prompt is required.")
+
         return jsonify({"error": "Prompt is required"}), 400
     
     try:
