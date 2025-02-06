@@ -1,41 +1,28 @@
-FROM python:3.9
+# Use a multi-stage build where stage 1 copies the Ollama binary
+FROM ollama/ollama:latest AS ollama
+
+FROM python:3.9-slim
 WORKDIR /app
-COPY requirements.txt ./
-RUN pip install -r requirements.txt
-COPY . .
+
+# Copy your application code
+COPY . /app
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the Ollama binary from the first stage
+COPY --from=ollama /usr/bin/ollama /usr/bin/ollama
+
+# Set environment variables for Flask
+ENV FLASK_APP=services/app.py
+ENV FLASK_ENV=development
+
+# Expose the Flask port
 EXPOSE 4000
-CMD ["python", "./services/app.py"]
 
-# Use an official Python runtime as a parent image
-# FROM python:3.9-slim
-
-# Set the working directory in the container
-# WORKDIR /app
-
-# Copy the current directory contents into the container at /app
-# COPY . /app
-
-# Install any needed packages specified in requirements.txt
-# RUN pip install --no-cache-dir -r requirements.txt
-
-# Expose the port that Flask runs on
-# EXPOSE 4000
-
-# Define environment variable to run in development mode
-# ENV FLASK_APP=services/app.py
-# ENV FLASK_ENV=development
-
-# Run Flask when the container starts
-# CMD ["flask", "run", "--host=0.0.0.0", "--port=4000"]
-
-
-
-# FROM python:3.9-slim
-# WORKDIR /src
-# COPY requirements.txt .
-# RUN pip install -r requirements.txt
-# COPY services source
-# EXPOSE 4000
-# HEALTHCHECK --interval=30s --timeout=50s --start-period=30s --retries=5 \
-#              CMD curl -f http://localhost:4000/generate || exit 1
-# ENTRYPOINT [ "python" , "./services/app.py" ]
+# Start Ollama, wait, pull the model, then start Flask
+CMD ["bash", "-c", "\
+  ollama serve & \
+  sleep 5 && \
+  ollama pull mistral && \
+  flask --app services/app.py run --host=0.0.0.0 --port=4000"]
