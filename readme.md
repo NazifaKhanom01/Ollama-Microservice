@@ -70,7 +70,7 @@ Send a POST request to /generate endpoint with the following JSON body:
 ```
 Sample Request using cURL:
 ```bash
-curl -X POST http://localhost:5000/generate -H "Content-Type: application/json" -d '{"prompt": "Can you tell me about different types of colours?", "model": "mistral"}'
+curl -X POST http://localhost:4000/generate -H "Content-Type: application/json" -d '{"prompt": "Can you tell me about different types of colours?", "model": "mistral"}'
 ```
 Response:
 ```json
