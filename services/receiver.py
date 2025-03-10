@@ -10,7 +10,7 @@ OLLAMA_HOST =  "http://ollama:11434"
 
 CORS(app)
 
-@app.route('/generate', methods=['POST'])
+@app.route('/receive', methods=['POST'])
 def generate_response():
     print("Starting ............")
     """Handles requests and forwards to Ollama (local LLM)."""
@@ -57,4 +57,4 @@ def generate_response():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=4000, debug=True)
+    app.run(host='0.0.0.0', port=4001, debug=True)
