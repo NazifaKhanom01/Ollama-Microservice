@@ -7,6 +7,8 @@ services:
     ports:
       - "11434:11434"  # Expose the Ollama service on port 11434
     restart: always
+    volumes:
+      - ollama_data:/root/.ollama
     entrypoint: ["sh", "-c", "ollama serve & sleep 10 && ollama pull mistral && wait"]
 
   flask_app:
@@ -16,5 +18,10 @@ services:
       - ollama  # Ensure Ollama starts first
     environment:
       - OLLAMA_HOST=ollama_server:11434  # Ensure Flask knows the Ollama server address
+    ports:
+      - "4000:4000"
     restart: always
-    entrypoint: ["sh", "-c", "until curl -s http://ollama_server:11434; do echo 'Waiting for Ollama to start...'; sleep 5; done; python app.py"]
+    entrypoint: ["sh", "-c", "until curl -s http://ollama_server:11434; do echo 'Waiting for Ollama to start...'; sleep 5; done; python services/app.py"]
+
+volumes:
+  ollama_data:
