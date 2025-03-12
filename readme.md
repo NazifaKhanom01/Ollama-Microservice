@@ -1,3 +1,61 @@
+## **Quick Start Guide**
+
+Follow these steps to get the project up and running in just a few commands.
+
+### **1. Install Docker & Docker Compose**
+
+Before starting, make sure you have Docker and Docker Compose installed.
+
+- **Docker**: [Download Docker](https://www.docker.com/get-started)
+- **Docker Compose**: Docker Compose is now included with Docker Desktop. If you are using Docker Desktop, Compose is automatically installed.
+
+### **2. Clone the Repository**
+
+Clone the repository to your local machine:
+```bash
+git clone https://github.com/NazifaKhanom01/Ollama-Microservice
+cd Ollama-Microservice
+```
+
+### **3. Build and Start the Containers**
+
+Once you have cloned the repository, navigate to the project directory and run the following command to build and start the containers:
+
+```bash
+docker-compose up --build
+```
+
+This command will:
+- Pull the necessary Docker images.
+- Download the required **Ollama models** (such as **Mistral** and **Gemma3**).
+- Start the Flask microservice and the Ollama model container.
+
+### **4. Send Requests to the API**
+
+After the containers are up and running, you can send **POST** requests to interact with the API.
+
+#### **Example Request**
+
+Use **cURL** to send a POST request:
+```bash
+curl -X POST http://localhost:4000/generate -H "Content-Type: application/json" -d '{"prompt": "Can you tell me about different types of colours?", "model": "mistral"}'
+```
+
+#### **Response**
+The API will respond with the model's answer to your prompt:
+```json
+{
+  "local_response": "There are many types of colours, including primary colours like red, blue, and yellow..."
+}
+```
+
+---
+
+### **That's it!**
+You're all set to interact with the local Ollama models. You can now send requests and get responses from **Mistral** and **Gemma3** models via the Flask API.
+
+If you have any questions or need further assistance, feel free to refer to the full documentation
+
 # Flask + Ollama Local Model Integration
 
 This project provides a simple Flask API that interacts with the **Ollama** local LLM (Mistral). It allows users to send requests and ask questions to the Mistral model via a POST request to the `/generate` endpoint. 
