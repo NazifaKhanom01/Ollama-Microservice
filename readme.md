@@ -54,103 +54,213 @@ The API will respond with the model's answer to your prompt:
 ### **That's it!**
 You're all set to interact with the local Ollama models. You can now send requests and get responses from **Mistral** and **Gemma3** models via the Flask API.
 
-If you have any questions or need further assistance, feel free to refer to the full documentation
+If you have any questions or need further assistance, feel free to refer to the full documentation below
+
+
+---
 
 # Flask + Ollama Local Model Integration
 
-This project provides a simple Flask API that interacts with the **Ollama** local LLM (Mistral). It allows users to send requests and ask questions to the Mistral model via a POST request to the `/generate` endpoint. 
+This project provides a **Flask API** that interacts with **Ollama**'s local language models such as **Mistral** and **Gemma3**. It allows users to send requests and ask questions to the models via a POST request to the `/generate` endpoint.
 
 ## **Prerequisites**
-Before running the code, make sure you have the following:
-- **Python 3.10+** → [Download here](https://www.python.org/downloads/)
-- **Ollama** → [Download here](https://ollama.com/download) and install it on your system.
-- **Mistral Model** → Once Ollama is installed, download the **Mistral** model via Ollama.
+
+Before running this project, ensure that you have the following installed on your system:
+
+- **Docker and Docker Compose**  
+  [Download Docker](https://www.docker.com)
+  
+- **Python 3.10+**  
+  [Download Python](https://www.python.org/downloads/)
+  
+- **Ollama**  
+  [Download Ollama](https://ollama.com/download) and install it on your system.
+
+- **Mistral Model**  
+  Once Ollama is installed, you can download the **Mistral** model by running the following command:
+  ```bash
+  ollama pull mistral
+  ```
+
+- **Gemma3 Model**  
+  Similarly, you can download the **Gemma3** model by running:
+  ```bash
+  ollama pull gemma3
+  ```
 
 ---
 
 ## **Setup & Installation**
 
-### **1. Clone the Repository**
-First, clone the repository to your local machine:
-```bash
-git clone https://github.com/NazifaKhanom01/Ollama-Microservice
-cd Ollama-Microservice
-```
+### **For Running with Docker**
 
-### **2. Install Ollama**
-Download and install Ollama from Ollama's official website. https://ollama.com/download
+1. **Clone the Repository**
 
-Once installed, make sure you have downloaded the Mistral model by running:
-```bash
-ollama run mistral
-```
+   First, clone the repository to your local machine:
+   ```bash
+   git clone https://github.com/NazifaKhanom01/Ollama-Microservice
+   cd Ollama-Microservice
+   ```
 
-### **3. Create a Virtual Environment**
-Create a Python virtual environment to manage dependencies:
-```bash
-python -m venv venv
-```
+2. **Build and Start the Containers**
 
-### **4. Activate the Virtual Environment**
-Activate the virtual environment:
+   After navigating to the project directory, run the following command to build and start the Docker containers:
+   ```bash
+   docker-compose up --build
+   ```
 
-Windows (PowerShell):
-```bash
-.\venv\Scripts\Activate
-```
-Mac/Linux:
-```bash
-source venv/bin/activate
-```
-## **5. Install Dependencies**
-Install the required Python packages:
+   This command will pull the necessary images, set up the environment, and download the required models. This process may take some time.
 
-```bash
-pip install -r requirements.txt
-```
+---
 
-## **6. Run the Flask Application**
-To start the Flask app locally, run:
+### **For Running Directly on Your OS**
 
-```bash
-python app.py
-```
+1. **Clone the Repository**
 
-The Flask app will run on http://localhost:5000.
+   Clone the repository to your local machine:
+   ```bash
+   git clone https://github.com/NazifaKhanom01/Ollama-Microservice
+   cd Ollama-Microservice
+   ```
 
-## Usage and Testing the service
-Send a POST request to /generate endpoint with the following JSON body:
+2. **Install Ollama**
+
+   Download and install Ollama from [Ollama's official website](https://ollama.com/download).
+
+   After installation, download the **Mistral** model by running:
+   ```bash
+   ollama pull mistral
+   ```
+
+3. **Create a Virtual Environment**
+
+   It's a good practice to use a virtual environment to manage Python dependencies. Create a virtual environment by running:
+   ```bash
+   python -m venv venv
+   ```
+
+4. **Activate the Virtual Environment**
+
+   Activate the virtual environment:
+
+   - **Windows (PowerShell)**:
+     ```bash
+     .\venv\Scripts\Activate
+     ```
+   
+   - **Mac/Linux**:
+     ```bash
+     source venv/bin/activate
+     ```
+
+5. **Install Dependencies**
+
+   Install the required Python packages by running:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+6. **Run the Flask Application**
+
+   To start the Flask app locally, run the following command:
+   ```bash
+   python app.py
+   ```
+
+   The Flask app will now be running at `http://localhost:4000`.
+
+---
+
+## **Usage and Testing the Service**
+
+You can interact with the Flask API by sending a **POST request** to the `/generate` endpoint.
+
+### **Request Example**
+
+Send a POST request with the following JSON body:
 ```json
 {
   "prompt": "Can you tell me about different types of colours?",
   "model": "mistral"
 }
 ```
-Sample Request using cURL:
+
+You can test the endpoint using **cURL**:
 ```bash
 curl -X POST http://localhost:4000/generate -H "Content-Type: application/json" -d '{"prompt": "Can you tell me about different types of colours?", "model": "mistral"}'
 ```
-Response:
+
+### **Response Example**
+
+The response will look something like this:
 ```json
 {
   "local_response": "There are many types of colours, including primary colours like red, blue, and yellow..."
 }
 ```
 
-## create a container for microservice using docker
+---
+
+## **Creating a Docker Container for the Microservice**
+
+To create a Docker container for the microservice, create a `Dockerfile` in the root directory with the following contents:
+
+```dockerfile
 FROM python:3.9
+
 WORKDIR /app
+
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
+
 COPY . .
+
 EXPOSE 4000
+
 CMD ["python", "./services/app.py"]
+```
 
-## Build and Run the docker image
-docker build -t ollamaservice .
-docker run -d -p 4000:4000 ollamaservice
+### **Build and Run the Docker Image**
 
-## Additional step
-## created a simple static webpage to show the LLM's response using angular
-## repository link for the webpage
-https://github.com/revathisekar19/llm-app.git
+1. **Build the Docker Image**:
+   ```bash
+   docker build -t ollamaservice .
+   ```
+
+2. **Run the Docker Container**:
+   ```bash
+   docker run -d -p 4000:4000 ollamaservice
+   ```
+
+This will start the Flask application inside a Docker container, exposing the service on port 4000.
+
+---
+
+## **Additional Step: Static Webpage Integration**
+
+For a simple static webpage that displays the LLM's response, we have integrated an Angular frontend. You can find the repository for this webpage at the following link:
+
+[LLM App Webpage Repository](https://github.com/revathisekar19/llm-app.git)
+
+---
+
+## **Directory Structure**
+
+The directory structure of the project is as follows:
+
+```
+Ollama-Microservice/
+│
+├── docker-compose.yml         # Docker Compose configuration file
+├── Dockerfile                 # Dockerfile to build the Flask microservice container
+├── requirements.txt           # Python dependencies
+├── app.py                     # Main Flask app
+├── services/                  # Service-related files (Flask routes, etc.)
+└── README.md                  # Project documentation
+```
+
+---
+
+## **Conclusion**
+
+This project provides a basic integration between Flask and the Ollama API, allowing you to interact with language models like **Mistral** and **Gemma3** via a RESTful API. You can run the service locally using Python or via Docker, and you can test it using cURL or any API client.
