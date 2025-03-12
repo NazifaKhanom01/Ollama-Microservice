@@ -7,7 +7,7 @@ services:
     ports:
       - "11434:11434"  # Expose the Ollama service on port 11434
     restart: always
-    entrypoint: ["sh", "-c", "ollama serve --host 0.0.0.0 & sleep 10 && ollama pull mistral && wait"]
+    entrypoint: ["sh", "-c", "ollama serve & sleep 10 && ollama pull mistral && wait"]
 
   flask_app:
     build: .
