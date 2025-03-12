@@ -9,6 +9,7 @@ services:
       - ./entrypoint.sh:/entrypoint.sh
     ports:
       - "11434:11434"
+    restart: always
     entrypoint: ["sh", "-c", "ollama pull mistral"]
 
   flask_app:
