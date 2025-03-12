@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   ollama:
-    image: ollama/ollama:latest  # Official Ollama Docker image
+    image: ollama/ollama
     container_name: ollama_server
     volumes:
       - ./ollama/ollama:/root/.ollama
@@ -10,7 +10,7 @@ services:
     ports:
       - "11434:11434"
     restart: always
-    entrypoint: ["sh", "-c", "ollama pull mistral"]
+    entrypoint: ["sh", "-c", "ollama pull mistral && ollama serve --host 0.0.0.0"]
 
   flask_app:
     build: .
