@@ -31,6 +31,7 @@ def generate_response():
     if not prompt:
         return jsonify({"error": "Prompt is required"}), 400
 
+
     try:
         response = requests.post(
             f"{OLLAMA_HOST}/api/chat",
@@ -45,12 +46,14 @@ def generate_response():
                     try:
                         json_chunk = json.loads(chunk.decode("utf-8"))
                         if json_chunk.get("done"):
+
                             break  
                         response_text += json_chunk.get("message", {}).get("content", "")
                     except json.JSONDecodeError:
                         continue  
 
             return jsonify({"local_response": response_text})
+
 
         else:
             return jsonify({"error": "Ollama API error", "details": response.text}), response.status_code
