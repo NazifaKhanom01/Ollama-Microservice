@@ -4,4 +4,4 @@ COPY requirements.txt ./
 RUN pip install -r requirements.txt
 COPY . .
 EXPOSE 4000
-CMD ["python", "./app/services/app.py"]
+CMD ["python", "./services/app.py"]
