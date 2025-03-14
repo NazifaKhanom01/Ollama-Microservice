@@ -22,7 +22,7 @@ cd Ollama-Microservice
 Once you have cloned the repository, navigate to the project directory and run the following command to build and start the containers:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 This command will:
