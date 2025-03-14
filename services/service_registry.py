@@ -9,14 +9,9 @@ import requests
 app = Flask(__name__)
 etcd = etcd3.client(host='localhost', port=2379)  # Connect to etcd
 
-SERVICE_TTL = 150  # Time to live for service entries (2.5 minutes)
+SERVICE_TTL = 180  # Time to live for service entries (2.5 minutes)
 HEARTBEAT_INTERVAL = 120  # Services must send a heartbeat every 2 minutes
 
-
-def register_service_in_etcd(service_name, service_url):
-    lease = etcd.lease(SERVICE_TTL)  # Create a lease for auto-expiry
-    etcd.put(f"/services/{service_name}", service_url, lease=lease)
-    etcd.put(f"/heartbeats/{service_name}", str(time.time()), lease=lease)
 
 # 1. Service Registration
 @app.route('/register', methods=['POST'])
@@ -29,7 +24,7 @@ def register_service():
         return jsonify({"error": "Missing service_name or service_url"}), 400
 
     try:
-        register_service_in_etcd(service_name, service_url)
+        etcd.put(f"/services/{service_name}", service_url)  # Store in etcd
         return jsonify({"message": "Service registered successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
