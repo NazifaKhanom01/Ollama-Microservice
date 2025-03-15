@@ -254,8 +254,9 @@ Ollama-Microservice/
 ├── docker-compose.yml         # Docker Compose configuration file
 ├── Dockerfile                 # Dockerfile to build the Flask microservice container
 ├── requirements.txt           # Python dependencies
-├── app.py                     # Main Flask app
 ├── services/                  # Service-related files (Flask routes, etc.)
+│   └── app.py                 # Main Flask app
+│   └── reciever.py            # handling requests and communicating with the service registry.
 └── README.md                  # Project documentation
 ```
 
