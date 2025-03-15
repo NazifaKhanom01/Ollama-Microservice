@@ -256,7 +256,8 @@ Ollama-Microservice/
 ├── requirements.txt           # Python dependencies
 ├── services/                  # Service-related files (Flask routes, etc.)
 │   └── app.py                 # Main Flask app
-│   └── reciever.py            # handling requests and communicating with the service registry.
+│   └── reciever.py            # handles requests and communicating with the service registry.
+│   └── service_registry.py    # Takes care of service registration, heartbeat, and message forwarding using etcd.
 └── README.md                  # Project documentation
 ```
 
