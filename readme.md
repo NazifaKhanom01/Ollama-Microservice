@@ -6,9 +6,6 @@ This project provides a **Flask API** that interacts with **Ollama**'s local lan
 
 Before running this project, ensure that you have the following installed on your system:
 
-- **Docker and Docker Compose**  
-  [Download Docker](https://www.docker.com)
-  
 - **Python 3.10+**  
   [Download Python](https://www.python.org/downloads/)
   
@@ -30,27 +27,6 @@ Before running this project, ensure that you have the following installed on you
 ---
 
 ## **Setup & Installation**
-
-### **For Running with Docker**
-
-1. **Clone the Repository**
-
-   First, clone the repository to your local machine:
-   ```bash
-   git clone https://github.com/NazifaKhanom01/Ollama-Microservice
-   cd Ollama-Microservice
-   ```
-
-2. **Build and Start the Containers**
-
-   After navigating to the project directory, run the following command to build and start the Docker containers:
-   ```bash
-   docker-compose up --build
-   ```
-
-   This command will pull the necessary images, set up the environment, and download the required models. This process may take some time.
-
----
 
 ### **For Running Directly on Your OS**
 
@@ -137,41 +113,6 @@ The response will look something like this:
   "local_response": "There are many types of colours, including primary colours like red, blue, and yellow..."
 }
 ```
-
----
-
-## **Creating a Docker Container for the Microservice**
-
-To create a Docker container for the microservice, create a `Dockerfile` in the root directory with the following contents:
-
-```dockerfile
-FROM python:3.9
-
-WORKDIR /app
-
-COPY requirements.txt ./
-RUN pip install -r requirements.txt
-
-COPY . .
-
-EXPOSE 4000
-
-CMD ["python", "./services/app.py"]
-```
-
-### **Build and Run the Docker Image**
-
-1. **Build the Docker Image**:
-   ```bash
-   docker build -t ollamaservice .
-   ```
-
-2. **Run the Docker Container**:
-   ```bash
-   docker run -d -p 4000:4000 ollamaservice
-   ```
-
-This will start the Flask application inside a Docker container, exposing the service on port 4000.
 
 ---
 
