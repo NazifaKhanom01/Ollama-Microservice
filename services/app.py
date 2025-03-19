@@ -72,8 +72,8 @@ app = Flask(__name__)
 
 OLLAMA_HOST = "http://localhost:11434"
 SERVICE_NAME = "revathi-llm-service"
-SERVICE_URL = "http://localhost:4000/generate"
-SERVICE_REGISTRY = "http://localhost:5002"
+SERVICE_URL = "http://10.150.14.86:4000/generate"
+SERVICE_REGISTRY = "http://10.150.14.86:5002"
 
 # Register Service on Startup
 def register_service():
@@ -96,6 +96,7 @@ def send_heartbeat():
 def generate_response():
     data = request.json
     prompt = data.get("prompt", "")
+    sender = data.get("sender", "unknown_sender")  # Identify sender
     model = data.get("model", "mistral")  
 
     if not prompt:
@@ -120,7 +121,12 @@ def generate_response():
                     except json.JSONDecodeError:
                         continue  
 
-            return jsonify({"local_response": response_text})
+            # return jsonify({"local_response": response_text})
+            return jsonify({
+                "message": response_text,
+                "response_from": SERVICE_NAME,  # Ensure response contains service name
+                "received_from": sender
+            })
 
         else:
             return jsonify({"error": "Ollama API error", "details": response.text}), response.status_code
@@ -140,9 +146,11 @@ def message_friend():
     data = request.json
     target_service = data.get("target_service")  
     payload = data.get("payload")
-
+    print("payload from llm", payload)
     if not target_service or not payload:
         return jsonify({"error": "Target service and payload are required"}), 400
+    # Include sender service name in the payload
+    payload["sender"] = SERVICE_NAME
     
     # Send a message to the Service Registry
     response = requests.post(f"{SERVICE_REGISTRY}/message", json={"target_service": target_service, "payload": payload})

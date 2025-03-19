@@ -62,9 +62,22 @@ def forward_message():
         return jsonify({"error": "Service not found"}), 404
 
     service_url = service_url.decode("utf-8")
+
+    # Ensure sender service info is included
+    sender_service = payload.get("sender_service", "unknown_sender")
+    payload["sender"] = sender_service
+
     try:
         response = requests.post(service_url, json=payload)
-        return jsonify({"message": "Message forwarded successfully", "response": response.json()})
+        response_data = response.json()
+        # Add the responding service name to the response
+        response_data["response_from"] = target_service
+        response_data["received_from"] = sender_service
+
+        # return jsonify({"message": "Message forwarded successfully", "response": response.json()})
+        return jsonify({"message": "Message forwarded successfully", "response": response_data})
+
+    
     except requests.exceptions.RequestException as e:
         return jsonify({"error": f"Failed to reach {target_service}: {str(e)}"}), 500
 
