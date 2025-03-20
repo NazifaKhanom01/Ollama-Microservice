@@ -30,19 +30,21 @@ Before running this project, ensure that you have the following installed on you
 
 ### **For Running Directly on Your OS**
 
-### ** Etcd setup**
+### Etcd setup
 
 1. **Pull the etcd Docker Image**
+   
          docker pull quay.io/coreos/etcd:v3.5.0
    
-2. **Run etcd as a Docker Container**
+3. **Run etcd as a Docker Container**
+   
    docker run -d --name etcd `
   -p 2379:2379 -p 2380:2380 `
   -e ALLOW_NONE_AUTHENTICATION=yes `
   -e ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379 `
   quay.io/coreos/etcd:v3.5.0
 
-3. **Verify the etcd Container is Running**
+5. **Verify the etcd Container is Running**
    docker ps
    
    
