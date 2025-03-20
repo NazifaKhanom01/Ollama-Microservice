@@ -49,7 +49,8 @@ Before running this project, ensure that you have the following installed on you
    docker ps
    
    
-### **Code setup**  
+### **Code setup** 
+
 
 1. **Clone the Repository**
 
