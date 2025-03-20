@@ -30,6 +30,24 @@ Before running this project, ensure that you have the following installed on you
 
 ### **For Running Directly on Your OS**
 
+### ** Etcd setup**
+
+1. **Pull the etcd Docker Image**
+         docker pull quay.io/coreos/etcd:v3.5.0
+   
+2. **Run etcd as a Docker Container**
+   docker run -d --name etcd `
+  -p 2379:2379 -p 2380:2380 `
+  -e ALLOW_NONE_AUTHENTICATION=yes `
+  -e ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379 `
+  quay.io/coreos/etcd:v3.5.0
+
+3. **Verify the etcd Container is Running**
+   docker ps
+   
+   
+### **Code setup**  
+
 1. **Clone the Repository**
 
    Clone the repository to your local machine:
@@ -75,16 +93,18 @@ Before running this project, ensure that you have the following installed on you
    pip install -r requirements.txt
    ```
 
-6. **Run the Flask Application**
+### **System Architecture**
 
-   To start the Flask app locally, run the following command:
-   ```bash
-   python app.py
-   ```
+The main components involved are:
 
-   The Flask app will now be running at `http://localhost:4000`.
+1. Service Registry: A Flask-based microservice that stores service information in Etcd
+and provides endpoints for microservices to register, list services, send heartbeats, and
+forward messages.
+2. Microservices: Each microservice registers with the service registry at startup, retrieves
+available services, sends messages via the registry, and periodically sends heartbeats.
+3. Etcd Storage: Acts as the backend database for storing service information
 
----
+
 
 ## **Usage and Testing the Service**
 
