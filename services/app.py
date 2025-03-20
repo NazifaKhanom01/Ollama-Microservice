@@ -72,8 +72,8 @@ app = Flask(__name__)
 
 OLLAMA_HOST = "http://localhost:11434"
 SERVICE_NAME = "revathi-llm-service"
-SERVICE_URL = "http://10.150.14.86:4000/generate"
-SERVICE_REGISTRY = "http://10.150.14.86:5002"
+SERVICE_URL = "http://10.190.10.160:4000/generate"
+SERVICE_REGISTRY = "http://10.190.10.160:5002"
 
 # Register Service on Startup
 def register_service():
