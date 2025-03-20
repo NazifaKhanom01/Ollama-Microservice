@@ -32,7 +32,6 @@ def send_heartbeat():
 def generate_response():
     data = request.json
     prompt = data.get("prompt", "")
-    sender = data.get("sender", "unknown_sender")  # Identify sender
     model = data.get("model", "mistral")  
 
     if not prompt:
@@ -61,7 +60,6 @@ def generate_response():
             return jsonify({
                 "message": response_text,
                 "response_from": SERVICE_NAME,  # Ensure response contains service name
-                "received_from": sender
             })
 
         else:
@@ -85,8 +83,6 @@ def message_friend():
     print("payload from llm", payload)
     if not target_service or not payload:
         return jsonify({"error": "Target service and payload are required"}), 400
-    # Include sender service name in the payload
-    payload["sender"] = SERVICE_NAME
     
     # Send a message to the Service Registry
     response = requests.post(f"{SERVICE_REGISTRY}/message", json={"target_service": target_service, "payload": payload})
