@@ -45,6 +45,7 @@ Before running this project, ensure that you have the following installed on you
   quay.io/coreos/etcd:v3.5.0
 
 5. **Verify the etcd Container is Running**
+   
    docker ps
    
    
