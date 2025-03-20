@@ -107,13 +107,37 @@ forward messages.
 available services, sends messages via the registry, and periodically sends heartbeats.
 3. Etcd Storage: Acts as the backend database for storing service information
 
+## API Endpoints:
+## Service Registry Endpoints
+1. Service Registration:
+        Endpoint: POST /register
+        Function: Registers a microservice with the service registry.
+2. Retrieve Available Services:
+        Endpoint: GET /service-list
+        Function: Returns a list of currently registered microservices.
+3. Message Forwarding:
+        Endpoint: POST /message
+        Function: Forwards a message from one microservice to another.
+4. Heartbeat Mechanism:
+        Endpoint: POST /heartbeat
+        Function: Updates the last-seen timestamp for a microservice, ensuring it remains in the service registry.
+5. Query Etcd:
+        Endpoint: POST /check-services
+        Function: Query Etcd for all the services stored in it
+
+## Microservice Endpoints
+1. Response Generation:
+        Endpoint: POST /generate
+        Function: Generate the response to the microservice
+2. Fetch list of Services:
+        Endpoint: GET /service-list
+        Function: Get the list of microservices from the service registry
+3. Communication with Friend's Service:
+        Endpoint: POST /message-friend
+        Function: Send message to friend's service through the /message endpoint in the service registry
 
 
 ## **Usage and Testing the Service**
-
-You can interact with the Flask API by sending a **POST request** to the `/generate` endpoint.
-
-### **Request Example**
 
 Send a POST request with the following JSON body:
 ```json
@@ -128,16 +152,10 @@ You can test the endpoint using **cURL**:
 curl -X POST http://localhost:4000/generate -H "Content-Type: application/json" -d '{"prompt": "Can you tell me about different types of colours?", "model": "mistral"}'
 ```
 
-### **Response Example**
 
-The response will look something like this:
-```json
-{
-  "local_response": "There are many types of colours, including primary colours like red, blue, and yellow..."
-}
-```
 
----
+
+
 
 ## Additional step
 ## created a simple static webpage to show the LLM's response using angular
