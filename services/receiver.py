@@ -8,8 +8,8 @@ app = Flask(__name__)
 
 OLLAMA_HOST = "http://localhost:11434"
 SERVICE_NAME = "nazifa-llm-service"
-SERVICE_URL = "http://localhost:4001/generate"
-SERVICE_REGISTRY = "http://localhost:5002"
+SERVICE_URL = "http://10.160.18.167:4001/generate"
+SERVICE_REGISTRY = "http://10.190.10.160:5002"
 
 # Register Service on Startup
 def register_service():
