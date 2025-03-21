@@ -136,6 +136,21 @@ available services, sends messages via the registry, and periodically sends hear
         Endpoint: POST /message-friend
         Function: Send message to friend's service through the /message endpoint in the service registry
 
+### **Request Example**
+
+Send a POST request with the following JSON body:
+```json
+{
+    "target_service": "revathi-llm-service",
+    "payload": {
+        "prompt": "Hey revathi!!!I am doing fine",
+        "model" : "mistral"
+    }
+}
+```
+
+
+
 # For Ollama + Microservice Assignment:
 
 This project provides a **Flask API** that interacts with **Ollama**'s local language models such as **Mistral** and **Gemma3**. It allows users to send requests and ask questions to the models via a POST request to the `/generate` endpoint.
