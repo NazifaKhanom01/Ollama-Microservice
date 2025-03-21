@@ -1,4 +1,4 @@
-# Flask + Ollama Local Model Integration
+# Flask + Ollama Local Model Integration(Service Discovery Implementation)
 
 This project provides a **Flask API** that interacts with **Ollama**'s local language models such as **Mistral** and **Gemma3**. It allows users to send requests and ask questions to the models via a POST request to the `/generate` endpoint.
 
