@@ -136,6 +136,20 @@ available services, sends messages via the registry, and periodically sends hear
         Endpoint: POST /message-friend
         Function: Send message to friend's service through the /message endpoint in the service registry
 
+# For Ollama Microservice Assignent:
+
+**Run the Flask Application**
+
+   To start the Flask app locally, run the following command:
+   ```bash
+   python app.py
+   ```
+
+   The Flask app will now be running at `http://localhost:4000`.
+
+---
+
+
 
 ## **Usage and Testing the Service**
 
@@ -151,13 +165,70 @@ You can test the endpoint using **cURL**:
 ```bash
 curl -X POST http://localhost:4000/generate -H "Content-Type: application/json" -d '{"prompt": "Can you tell me about different types of colours?", "model": "mistral"}'
 ```
+---
+
+## **Creating a Docker Container for the Microservice**
+
+To create a Docker container for the microservice, create a `Dockerfile` in the root directory with the following contents:
+
+```dockerfile
+FROM python:3.9
+
+WORKDIR /app
+
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 4000
+
+CMD ["python", "./services/app.py"]
+```
+
+### **Build and Run the Docker Image**
+
+1. **Build the Docker Image**:
+   ```bash
+   docker build -t ollamaservice .
+   ```
+
+2. **Run the Docker Container**:
+   ```bash
+   docker run -d -p 4000:4000 ollamaservice
+   ```
+
+This will start the Flask application inside a Docker container, exposing the service on port 4000.
+
+---
+
+## **Additional Step: Static Webpage Integration**
+
+For a simple static webpage that displays the LLM's response, we have integrated an Angular frontend. You can find the repository for this webpage at the following link:
+
+[LLM App Webpage Repository](https://github.com/revathisekar19/llm-app.git)
+
+---
+
+## **Directory Structure**
+
+The directory structure of the project is as follows:
+
+```
+Ollama-Microservice/
+│
+├── docker-compose.yml         # Docker Compose configuration file
+├── Dockerfile                 # Dockerfile to build the Flask microservice container
+├── requirements.txt           # Python dependencies
+├── app.py                     # Main Flask app
+├── services/                  # Service-related files (Flask routes, etc.)
+└── README.md                  # Project documentation
+```
+
+---
+
+## **Conclusion**
+
+This project provides a basic integration between Flask and the Ollama API, allowing you to interact with language models like **Mistral** and **Gemma3** via a RESTful API. You can run the service locally using Python or via Docker, and you can test it using cURL or any API client.
 
 
-
-
-
-
-## Additional step
-## created a simple static webpage to show the LLM's response using angular
-## repository link for the webpage
-https://github.com/revathisekar19/llm-app.git
