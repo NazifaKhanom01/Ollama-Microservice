@@ -155,8 +155,8 @@ The response will look something like this:
 {
   "message": "Message forwarded successfully",
   "response": {
-  "message": "Hi! I'm an AI, so I don't have feelings...."
-  "received_from: "unknown_sender"
+  "message": "Hi! I'm an AI, so I don't have feelings....",
+  "received_from: "unknown_sender",
   "response_from: nazifa-llm-service"
   }
 }
