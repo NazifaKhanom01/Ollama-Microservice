@@ -141,9 +141,9 @@ available services, sends messages via the registry, and periodically sends hear
 Send a POST request with the following JSON body:
 ```json
 {
-    "target_service": "revathi-llm-service",
+    "target_service": "nazifa-llm-service",
     "payload": {
-        "prompt": "Hey revathi!!!I am doing fine",
+        "prompt": "Hey nazifa!!!I am doing fine",
         "model" : "mistral"
     }
 }
